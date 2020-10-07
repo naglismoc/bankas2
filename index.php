@@ -1,18 +1,26 @@
 <?php
+
+require __DIR__."/BankUser.php";
 session_start();
 
-unset($_SESSION);
-var_dump(empty($_SESSION["bank"]));
+// unset($_SESSION["bank"]);
+
 if(!isset($_SESSION["bank"])){
 $_SESSION["bank"]=[];
-}
-require __DIR__."/BankUser.php";
+
 for ($i=0; $i <100 ; $i++) { 
+    consoleLog($i);
     $natId="".rand(30001010001,69912319999);
     $_SESSION["bank"][$natId]=
      new BankUser("Petras".$i,"Petraitis".$i,"Vilnius".$i,$natId);
-}
+}}
+function consoleLog($data) {
+    $output = $data;
+    if (is_array($output))
+        $output = implode(',', $output);
 
+    echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+}
 ?>
 
 <!DOCTYPE html>
@@ -59,6 +67,7 @@ for ($i=0; $i <100 ; $i++) {
 <?php
 echo count($_SESSION["bank"]);
 // die;
+if(!empty($_SESSION["bank"])){
   foreach ($_SESSION["bank"] as $natId => $bankUser) {?>
      
     <tr>    
@@ -87,7 +96,7 @@ echo count($_SESSION["bank"]);
         </form></td>
     </tr>
   <?php
-}?>
+}}?>
 
 
 </table>
