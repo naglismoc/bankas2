@@ -8,7 +8,7 @@ class BankUser{
     public $natId;
     public $accountNr;
     public $accontBalance;
-    public $age;
+    public $birhDate;
     public $bankCountry = "LT";
     public static $accUniqueNr = 730000000000;
 
@@ -17,18 +17,18 @@ class BankUser{
         $this->surname=$surname;
         $this->address=$address;
         $this->natId=$natId;
-        $this->age=$this->age();
+        $this->birhDate=$this->birhDate();
         $this->accountNr=$this->bankCountry. $this::$accUniqueNr;
         $this::$accUniqueNr++;
         $this->accontBalance=0;
 
     }
-    public function age(){
-        $age="20";
+    public function birhDate(){
+        $birhDate="20";
         if($this->natId[0]=="3" || $this->natId[0]=="4"){
-        $age="19";
+        $birhDate="19";
         }
-        return date ( 'Y-m-d' , strtotime (  $age.substr($this->natId,1,6) ) );
+        return date ( 'Y-m-d' , strtotime (  $birhDate.substr($this->natId,1,6) ) );
        ;
     }
 

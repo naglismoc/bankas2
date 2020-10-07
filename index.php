@@ -96,7 +96,7 @@ if(!empty($_SESSION["bank"])){
         <td><?=$bankUser->name?></td>
         <td><?=$bankUser->surname?></td>
         <td><?=$bankUser->address?></td>
-        <td><?=$bankUser->age?></td>
+        <td><?=$bankUser->birhDate?></td>
         <td><?=$bankUser->accountNr?></td>
         <td><?=$bankUser->accontBalance?></td>
         <td><form action=''>
