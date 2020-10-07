@@ -3,14 +3,35 @@
 require __DIR__."/BankUser.php";
 session_start();
 
-// unset($_SESSION["bank"]);
+unset($_SESSION["bank"]);
 
 if(!isset($_SESSION["bank"])){
 $_SESSION["bank"]=[];
 
 for ($i=0; $i <100 ; $i++) { 
     consoleLog($i);
-    $natId="".rand(30001010001,69912319999);
+    $natId="".rand(3,6);
+    $year= rand(0,99);
+    if($year<10){
+        $natId.="0".$year; 
+    }else{
+        $natId.=$year; 
+    }
+    $month=rand(1,12);
+    if($month<10){
+        $natId.="0".$month; 
+    }else{
+        $natId.=$month; 
+    }
+    $day=rand(1,31);
+    if($day<10){
+        $natId.="0".$day; 
+    }else{
+        $natId.=$day; 
+    }
+    
+    $natId.=rand(1000,9999);
+    // $natId="".rand(30001010001,69912319999);
     $_SESSION["bank"][$natId]=
      new BankUser("Petras".$i,"Petraitis".$i,"Vilnius".$i,$natId);
 }}
