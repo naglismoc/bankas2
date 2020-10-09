@@ -1,47 +1,17 @@
 <?php
 
 require __DIR__."/BankUser.php";
+include ("functions.php");
+include ("moneyManipulation.php");
 session_start();
 
-unset($_SESSION["bank"]);
 
+
+// unset($_SESSION["bank"]);//useriu resetas, atkomentavus vienam reloadui
 if(!isset($_SESSION["bank"])){
-$_SESSION["bank"]=[];
-
-for ($i=0; $i <100 ; $i++) { 
-    consoleLog($i);
-    $natId="".rand(3,6);
-    $year= rand(0,99);
-    if($year<10){
-        $natId.="0".$year; 
-    }else{
-        $natId.=$year; 
-    }
-    $month=rand(1,12);
-    if($month<10){
-        $natId.="0".$month; 
-    }else{
-        $natId.=$month; 
-    }
-    $day=rand(1,31);
-    if($day<10){
-        $natId.="0".$day; 
-    }else{
-        $natId.=$day; 
-    }
-    
-    $natId.=rand(1000,9999);
-    // $natId="".rand(30001010001,69912319999);
-    $_SESSION["bank"][$natId]=
-     new BankUser("Petras".$i,"Petraitis".$i,"Vilnius".$i,$natId);
-}}
-function consoleLog($data) {
-    $output = $data;
-    if (is_array($output))
-        $output = implode(',', $output);
-
-    echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+    generateRndUsers(50);
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -69,14 +39,46 @@ function consoleLog($data) {
     tr:nth-child(even) {
     background-color: #dddddd;
     }
+    #msg{
+        width: 90%;
+        margin-left:5%;
+       
+        margin-bottom:-40px;
+        border-radius: 5px;
+        text-align:center;
+        margin-block-start: 0;
+        margin-block-end: 0;
+    }
+    .msgGood{
+        background-color:rgb(215, 250, 190);
+    }
+    .msgBad{
+        background-color:rgb(245, 186, 186);
+    }
 </style>
+
+<?php
+if(isset($_POST["amount"])){
+    moneyManipulation();
+}
+
+if(isset($_POST["delete"])){
+    detelete();
+}
+if(isset($_POST["update"])){
+    //update();
+}
+?>
+
+
+
 <table>
   <tr>
     <th>Asmens kodas</th>
     <th>Vardas</th>
     <th>Pavardė</th>
     <th>Adresas</th>
-    <th>age</th>
+    <th>Birth date</th>
     <th>accountNr</th>
     <th>accontBalance</th>
     <th>prideti</th>
@@ -86,7 +88,7 @@ function consoleLog($data) {
 </tr>
 
 <?php
-echo count($_SESSION["bank"]);
+echo ($_POST["amount"]);
 // die;
 if(!empty($_SESSION["bank"])){
   foreach ($_SESSION["bank"] as $natId => $bankUser) {?>
@@ -99,25 +101,35 @@ if(!empty($_SESSION["bank"])){
         <td><?=$bankUser->birhDate?></td>
         <td><?=$bankUser->accountNr?></td>
         <td><?=$bankUser->accontBalance?></td>
-        <td><form action=''>
+        <td><form action='' method='post'>
             <input type="hidden" name="add" value="<?=$natId?>">
+            <input type="text"   name="amount" maxlength="10" size="7" value="<?=isset($_POST["add"])?(isset($_POST["amount"]) ?($natId==$_POST['add']? $_POST["amount"] :""):""):"" ?>">
             <input type="submit" value="add">
         </form></td>
-        <td><form action=''>
+        <td><form action='' method='post'>
             <input type="hidden" name="substract" value="<?=$natId?>">
+            <input type="text"   name="amount" maxlength="10" size="7" value="<?=isset($_POST["substract"])?(isset($_POST["amount"]) ?($natId==$_POST['substract']? $_POST["amount"] :""):""):"" ?>">
             <input type="submit" value="substract">
         </form></td>
-        <td><form action=''>
-            <input type="hidden" name="delete" value="<?=$key?>">
+        <td><form action='' method='post'>
+            <input type="hidden" name="delete" value="<?=$natId?>">
             <input type="submit" value="Delete">
         </form></td>
-        <td><form action='edit.php'>
-            <input type="hidden" name="update" value="<?=$key?>">
+        <td><form action='edit.php' method='post'>
+            <input type="hidden" name="update" value="<?=$natId?>">
             <input type="submit" value="update">
         </form></td>
     </tr>
   <?php
-}}?>
+}}
+
+
+
+
+
+?>
+
+
 
 
 </table>
